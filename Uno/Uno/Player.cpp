@@ -22,10 +22,14 @@ void Player::changeScore(int NewScore){
 }
 
 void Player::addCard(int card){
-    
+    cards.push_back(card);
 }
 void Player::subCard(int card){
-    
+    for (int i = 0; i < cards.size(); i++){
+        if (card == cards[i]){
+            cards[i]--;
+        }
+    }
 }
 vector<int> Player::getCards(){
     return cards;

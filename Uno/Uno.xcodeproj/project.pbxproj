@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		CF4B498E1B33D55000228CE9 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CF4B498D1B33D55000228CE9 /* main.cpp */; };
-		CF4B49991B369D5900228CE9 /* Card.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CF4B49971B369D5900228CE9 /* Card.cpp */; };
-		CF4B499C1B369D6500228CE9 /* Deck.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CF4B499A1B369D6500228CE9 /* Deck.cpp */; };
 		CF4B499F1B369D7900228CE9 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CF4B499D1B369D7900228CE9 /* Player.cpp */; };
 /* End PBXBuildFile section */
 
@@ -28,12 +26,9 @@
 /* Begin PBXFileReference section */
 		CF4B498A1B33D55000228CE9 /* Uno */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Uno; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF4B498D1B33D55000228CE9 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		CF4B49971B369D5900228CE9 /* Card.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Card.cpp; sourceTree = "<group>"; };
-		CF4B49981B369D5900228CE9 /* Card.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Card.h; sourceTree = "<group>"; };
-		CF4B499A1B369D6500228CE9 /* Deck.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Deck.cpp; sourceTree = "<group>"; };
-		CF4B499B1B369D6500228CE9 /* Deck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Deck.h; sourceTree = "<group>"; };
 		CF4B499D1B369D7900228CE9 /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cpp; sourceTree = "<group>"; };
 		CF4B499E1B369D7900228CE9 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
+		CF4B49A11B37993A00228CE9 /* Stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stack.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,10 +62,7 @@
 			isa = PBXGroup;
 			children = (
 				CF4B498D1B33D55000228CE9 /* main.cpp */,
-				CF4B49971B369D5900228CE9 /* Card.cpp */,
-				CF4B49981B369D5900228CE9 /* Card.h */,
-				CF4B499A1B369D6500228CE9 /* Deck.cpp */,
-				CF4B499B1B369D6500228CE9 /* Deck.h */,
+				CF4B49A11B37993A00228CE9 /* Stack.h */,
 				CF4B499D1B369D7900228CE9 /* Player.cpp */,
 				CF4B499E1B369D7900228CE9 /* Player.h */,
 			);
@@ -134,9 +126,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CF4B499F1B369D7900228CE9 /* Player.cpp in Sources */,
-				CF4B499C1B369D6500228CE9 /* Deck.cpp in Sources */,
 				CF4B498E1B33D55000228CE9 /* main.cpp in Sources */,
-				CF4B49991B369D5900228CE9 /* Card.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

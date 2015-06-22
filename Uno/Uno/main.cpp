@@ -5,9 +5,8 @@
 #include <cstdlib>
 #include <ctime>
 #include <iomanip>
-#include "Deck.h"
-#include "Card.h"
 #include "Player.h"
+#include "Stack.h"
 using namespace std;
 
 void ObjectOfTheGame();
@@ -16,8 +15,8 @@ void FunctionsOfTheActionCards();
 void GoingOut();
 void Scoring();
 void WinningTheGame();
-//Once the cards are shuffled each player is dealt 7 cards
-//The remainder of the deck is placed face down to form a DRAW pile. The top card of the DRAW pile is turned over to begin a DISCARD pile
+
+
 //match the card on the DISCARD pile, either by number, color or symbol
 //If the player doesn’t have a card to match the one on the DISCARD pile, he/she must take a card from the DRAW pile. If the card picked up can be played, the player is free to put it down in the same turn. Otherwise, play moves on to the next person in turn.
 //Players may choose not to play a playable card from their hand. If so, the player must draw a card from the DRAW pile. If playable, that card can be put down in the same turn, but the player may not use a card from the hand after the draw.
@@ -87,36 +86,80 @@ int main(){
     Player p1 (name, 0);
     Player comp ("Computer", 0);
     
+    //create text files for player/ high schores
+    string filename = name+".txt";
+    fstream player (filename, ios::beg | ios::out);
+    if (player.fail()){
+        cout << "Could not open file: " << filename << endl;
+        return 0;
+    }
+    player << name << endl;
+    player.close();
+    fstream hs ("HighScores.txt", ios::beg | ios::out);
+    if (hs.fail()){
+        cout << "Could not open file: HighScores.txt" <<endl;
+        return 0;
+    }
+    hs << "High Scores\n" << endl;
+    hs.close();
+    
     //shuffle the cards
 //make the cards more accurate with the ranks/colors
     const int NUMBER_OF_CARDS = 108;
     string colors[4] = {"Red", "Blue", "Green", "Yellow"};
     string ranks[15]  = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "Draw Two", "Skip", "Reverse", "Wild", "Wild Draw Four"};
     //initialize
-    vector<int> deck(NUMBER_OF_CARDS);
+    vector<int> shuffle(NUMBER_OF_CARDS);
     for (int i = 0; i < NUMBER_OF_CARDS; i++){
-        deck[i] = i;
+        shuffle[i] = i;
     }
     //shuffle
     srand(time(0));
     for (int i = 0; i < NUMBER_OF_CARDS; i++){
         int index = rand() % NUMBER_OF_CARDS;
-        int temp = deck[i];
-        deck[i] = deck[index];
-        deck[index] = temp;
+        int temp = shuffle[i];
+        shuffle[i] = shuffle[index];
+        shuffle[index] = temp;
     }
     
-    //diplay the first 7
+    //add the cards from the vector to a stack
+    Stack<int>deck;
+    for (int i = 0; i < NUMBER_OF_CARDS; i++){
+        deck.push(shuffle[i]);
+    }
+    
+    //Once the cards are shuffled each player is dealt 7 cards
+    //deal the cards to player and computer
     for (int i = 0; i < 7; i++){
-        if (ranks[deck[i] % 15] != "Wild" && ranks[deck[i] % 15] != "Wild Draw Four")
+        p1.addCard(deck.pop());
+    }
+    for (int i = 0; i < 7; i++){
+        comp.addCard(deck.pop());
+    }
+    
+    //ouputs the users cards & the face up card
+    cout << "\nYour cards are: " << endl;
+    for (int i = 0; i < p1.getCards().size(); i++){
+        if (ranks[p1.getCards()[i] % 15] != "Wild" && ranks[p1.getCards()[i] % 15] != "Wild Draw Four")
         {
-        cout << ranks[deck[i] % 15] << " " << colors[deck[i] % 4] << endl;
+            cout << ranks[p1.getCards()[i] % 15] << " " << colors[p1.getCards()[i] % 4] << endl;
         }
         else
-            cout << ranks[deck[i] % 15] << endl;
+            cout << ranks[p1.getCards()[i] % 15] << endl;
     }
     
-    //deal the cards to player and computer
+    //The remainder of the deck is placed face down to form a DRAW pile. The top card of the DRAW pile is turned over to begin a DISCARD pile
+    cout << "\nThe face up card is: " << endl;
+    vector<int> discard;
+    discard.push_back(deck.pop());
+    unsigned long size = discard.size();
+    if (ranks[discard[size] % 15] != "Wild" && ranks[discard[size] % 15] != "Wild Draw Four")
+    {
+        cout << ranks[discard[size] % 15] << " " << colors[discard[size] % 4] << endl;
+    }
+    else
+        cout << ranks[discard[size] % 15] << endl;
+    
 }
 
 void ObjectOfTheGame(){
