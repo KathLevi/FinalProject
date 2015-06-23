@@ -25,11 +25,18 @@ void Player::addCard(int card){
     cards.push_back(card);
 }
 void Player::subCard(int card){
+    int index;
     for (int i = 0; i < cards.size(); i++){
-        if (card == cards[i]){
-            cards[i]--;
+        if (cards[i] == card){
+            index = i;
+            break;
         }
     }
+    for (; index < cards.size(); index++){
+        cards[index] = cards[index+1];
+    }
+    unsigned long size = cards.size();
+    cards.pop_back();
 }
 vector<int> Player::getCards(){
     return cards;
