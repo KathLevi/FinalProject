@@ -21,6 +21,7 @@ int PlayerCard();
 int CompCard(vector<int> cards, int discard);
 bool TestCard(int card, int discard);
 void DiscardPile(int discard);
+
 //Special two player rules:
 //1. Playing a Reverse card acts like a Skip. The player who plays the Reverse may immediately play another card.
 //2. The person playing a Skip card may immediately play another card.
@@ -34,6 +35,7 @@ void DiscardPile(int discard);
 //Skip . . . . . . . . . . . . . . . . . . . . . . . . . . . . 20 Points
 //Wild . . . . . . . . . . . . . . . . . . . . . . . . . . . . 50 Points
 //Wild Draw Four . . . . . . . . . . . . . . . . . . . 50 Points
+
 const int NUMBER_OF_CARDS = 108;
 string colors[4] = {"Red", "Blue", "Green", "Yellow"};
 string ranks[15]  = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "Draw Two", "Skip", "Reverse", "Wild", "Wild Draw Four"};
@@ -97,43 +99,42 @@ int main(){
     for (int i = 0; i < 7; i++){
         comp.addCard(draw.pop());
     }
-   
+    
     
     //The remainder of the deck is placed face down to form a DRAW pile. The top card of the DRAW pile is turned over to begin a DISCARD pile
     vector<int> discard;
     discard.push_back(draw.pop());
     //playing the game
     do{
-        unsigned long size = discard.size();
+        unsigned long size = discard.size()-1;
         DiscardPile(discard[size]);
         
         cout << "\n\n" <<name << "'s turn" << endl; //Users turn
         cout << "Your cards are: " << endl; //outputs the users cards
-            for (int i = 0; i < p1.getCards().size(); i++){
-                if (ranks[p1.getCards()[i] % 15] != "Wild" && ranks[p1.getCards()[i] % 15] != "Wild Draw Four")
-                {
-                    cout << i << ") " << ranks[p1.getCards()[i] % 15] << " " << colors[p1.getCards()[i] % 4] << endl;
-                }
-                else
-                    cout << i << ") " << ranks[p1.getCards()[i] % 15] << endl;
+        for (int i = 0; i < p1.getCards().size(); i++){
+            if (ranks[p1.getCards()[i] % 15] != "Wild" && ranks[p1.getCards()[i] % 15] != "Wild Draw Four")
+            {
+                cout << i << ") " << ranks[p1.getCards()[i] % 15] << " " << colors[p1.getCards()[i] % 4] << endl;
             }
+            else
+                cout << i << ") " << ranks[p1.getCards()[i] % 15] << endl;
+        }
         int choice = PlayerCard();
         if (TestCard(p1.getCards()[choice], discard[size]) == true){
             discard.push_back(p1.getCards()[choice]); //put the played card on top of the discard deck
             p1.subCard(p1.getCards()[choice]); //subtract used card from players hand
+            size++;
         }
         else{
-        //If the player doesn’t have a card to match the one on the DISCARD pile, he/she must take a card from the DRAW pile.
+            //If the player doesn’t have a card to match the one on the DISCARD pile, he/she must take a card from the DRAW pile.
             p1.addCard(draw.pop()); //draw
             cout << "That card cannot be played. You have drawn a new card." << endl;;
         }
         
-        DiscardPile(discard[size]);
         cout << "\n\nComputer's turn" << endl; //Computers turn
-            int cc = CompCard(comp.getCards(), discard[size]);
-            //output what the computer does on it's turn
+        int cc = CompCard(comp.getCards(), discard[size]);
+        //output what the computer does on it's turn
         if (TestCard(comp.getCards()[cc], discard[size]) == true){
-//something is wrong around this point and I dont know what it is
             discard.push_back(comp.getCards()[cc]); //put the played card on top of the discard deck
             comp.subCard(comp.getCards()[cc]); //subtract used card from computers hand
         }
@@ -145,14 +146,14 @@ int main(){
         
     } while (!draw.empty() || !p1.getCards().empty()|| !comp.getCards().empty());
     //repeat until one player runs out of cards OR when the deck is empty
-
-
-
-//action cards
     
-//scoring
-//save to the files and to the players classes
-
+    
+    
+    //action cards
+    
+    //scoring
+    //save to the files and to the players classes
+    
 }
 
 void Welcome(){
@@ -264,7 +265,7 @@ bool TestCard(int card, int discard){
     }
 }
 void DiscardPile(int discard){
-     cout << "\nThe face up card is: " << endl;
+    cout << "\nThe face up card is: " << endl;
     
     if (ranks[discard % 15] == "Wild" || ranks[discard % 15] == "Wild Draw Four")
         cout << ranks[discard % 15] << endl;
@@ -272,3 +273,4 @@ void DiscardPile(int discard){
     else
         cout << ranks[discard % 15] << " " << colors[discard % 4] << endl;
 }
+

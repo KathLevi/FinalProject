@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>BB2208CD-646C-4177-90C6-CD6CF78DCDB2</string>
 	<key>IDESourceControlProjectName</key>
-	<string>project</string>
+	<string>Uno</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>C881EF86F327989CF6FD987C3AC670E3184C8410</key>
 		<string>https://github.com/KathLevi/FinalProject.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>Uno/Uno.xcodeproj/project.xcworkspace</string>
+	<string>Uno/Uno.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>C881EF86F327989CF6FD987C3AC670E3184C8410</key>

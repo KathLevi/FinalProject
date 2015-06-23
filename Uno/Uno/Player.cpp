@@ -32,10 +32,9 @@ void Player::subCard(int card){
             break;
         }
     }
-    for (; index < cards.size(); index++){
+    for (; index < cards.size()-1; index++){
         cards[index] = cards[index+1];
     }
-    unsigned long size = cards.size();
     cards.pop_back();
 }
 vector<int> Player::getCards(){
