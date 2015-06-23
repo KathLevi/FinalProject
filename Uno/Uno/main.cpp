@@ -7,16 +7,11 @@
 #include <iomanip>
 #include "Player.h"
 #include "Stack.h"
+#include "Welcome.h"
 using namespace std;
 
 //go through rules to make sure they make sense with the digital game
-void Welcome();
-void ObjectOfTheGame();
-void HowToPlay();
-void FunctionsOfTheActionCards();
-void GoingOut();
-void Scoring();
-void WinningTheGame();
+//add clear functions right before I turn it in
 int PlayerCard();
 int CompCard(vector<int> cards, int discard);
 bool TestCard(int card, int discard);
@@ -31,8 +26,6 @@ string ranks[15]  = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "Draw Two
 
 int main(){
     
-    Welcome();
-    
     //Begin a new game
     cout << "Hello and Welcome to Uno. What would you like to be known by? ";
     string name;
@@ -41,8 +34,12 @@ int main(){
     Player p1 (name, 0);
     Player comp ("Computer", 0);
     
-    //create text files for player
-    string filename = name+".txt";
+    Welcome w1;
+    w1.Intro();
+//CLEAR SCREEN
+    
+    //create text file for player to keep track of scores
+    string filename = name+" Scores.txt";
     fstream player (filename, ios::beg | ios::out);
     if (player.fail()){
         cout << "Could not open file: " << filename << endl;
@@ -51,10 +48,10 @@ int main(){
     player << name << endl;
     player.close();
     
-    char again;
+    char again = 'y';
     do{
         //shuffle the cards
-    //make the cards more accurate with the ranks/colors
+//make the cards more accurate with the ranks/colors
         //initialize
         vector<int> deck(NUMBER_OF_CARDS);
         for (int i = 0; i < NUMBER_OF_CARDS; i++){
@@ -74,6 +71,8 @@ int main(){
         for (int i = 0; i < NUMBER_OF_CARDS; i++){
             draw.push(deck[i]);
         }
+        //empty deck
+        deck.clear();
         
         //Once the cards are shuffled each player is dealt 7 cards
         //deal the cards to player and computer
@@ -83,7 +82,6 @@ int main(){
         for (int i = 0; i < 7; i++){
             comp.addCard(draw.pop());
         }
-        
         
         //The remainder of the deck is placed face down to form a DRAW pile. The top card of the DRAW pile is turned over to begin a DISCARD pile
         vector<int> discard;
@@ -123,6 +121,9 @@ int main(){
                     size++;
                 }
                 if (ranks[p1.getCards()[choice] % 15] == "Skip" || ranks[p1.getCards()[choice] % 15] == "Reverse"){
+//better way to do the skip/ reverse cards
+//when they play reverse or skip, the card doesnt transfer to the discard deck
+                    discard.push_back(p1.getCards()[choice]); //put the played card on top of the discard deck
                     p1.subCard(p1.getCards()[choice]);
                     DiscardPile(discard[size]);
                     
@@ -155,6 +156,7 @@ int main(){
                             discard.push_back(Wild(discard[size]));
                             size++;
                         }
+//if they try to play a skip/ reverse again make them choose another card
                         size++;
                     }
                     else{
@@ -194,6 +196,9 @@ int main(){
                 if (ranks[comp.getCards()[cc] % 15] == "Wild")
                     discard.push_back(WildComp(discard[size]));
                 if (ranks[comp.getCards()[cc] % 15] == "Skip" || ranks[comp.getCards()[cc] % 15] == "Reverse"){
+//better way to do the skip/ reverse cards
+//when they play reverse or skip, the card doesnt transfer to the discard deck
+                    discard.push_back(comp.getCards()[cc]); //put the played card on top of the discard deck
                     comp.subCard(comp.getCards()[cc]);
                     DiscardPile(discard[size]);
                     cout << "\n\nComputer's turn" << endl; //Computers turn
@@ -214,6 +219,7 @@ int main(){
                         }
                         if (ranks[comp.getCards()[cc] % 15] == "Wild")
                             discard.push_back(WildComp(discard[size]));
+//if they try to play a skip/ reverse again make them choose another card
                     }
                     else{
                         cout << "The computer has drawn a card." << endl;  //draw
@@ -229,105 +235,49 @@ int main(){
                 comp.addCard(draw.pop());
             }
             
-            
+//CLEAR SCREEN
         }while (!draw.empty() || (p1.getCards().size() != 0) || (comp.getCards().size() != 0));
-        //repeat until one player runs out of cards OR when the deck is empty
+        //repeat until one player runs out of cards OR when the draw deck is empty
         
+//CLEAR SCREEN
+        //tell who wins and deal out the scores
         if (p1.getCards().empty() || p1.getCards().size() < comp.getCards().size())
         {
-            cout << name << " wins!" << endl;
-            cout << name << " receives ";
-            Score(p1.getCards(), comp.getCards());//scoring
-            cout << " points." << endl;
+            cout << endl <<name << " wins!" << endl;
             p1.changeScore(Score(p1.getCards(), comp.getCards()));
+            cout << name << " receives " << p1.getScore() << " points." << endl;
         }
         else
         {
             cout << "Computer wins!" << endl;
-            cout << "The Computer reveives ";
-            Score(p1.getCards(), comp.getCards()); //scoring
-            cout << " points." << endl;
             comp.changeScore(Score(p1.getCards(), comp.getCards()));
+            cout << "The Computer reveives " << comp.getScore() << " points." << endl;
         }
         
-        //save to the files and to the players classes
+        //make both hands and the decks empty again
+        p1.cards.clear();
+        comp.cards.clear();
+        do{
+            draw.pop();
+        }while (!draw.empty());
+        discard.clear();
+        
+        //save the scores to the files
         player.open(filename, ios::beg | ios::app);
         player << Score(p1.getCards(), comp.getCards()) << endl;
         player.close();
 
         cout << "Play again? (y or n)";
         cin >> again;
-        
+        again = tolower(again);
+//CLEAR SCREEN
     }while(again == 'y');
     
+    cout << "Thank you for playing, " << name << "! Come back soon!" << endl;
+//CLEAR SCREEN
+    return 0;
 }
 
-void Welcome(){
-    //Welcome and introduction to the game
-    cout << "Welcome to the game of Uno!";
-    char choice = 'y';
-    do{
-        cout << "\nPlease choose a menu option below: \n\t1) Object Of the Game\n\t2) How to Play\n\t3) Functions of the Action Cards\n\t4) Going Out\n\t5) Scoring\n\t6) Winning the Game\n\t7) I already know how to play\nYour choice: ";
-        int menuOption;
-        cin >> menuOption;
-        
-        switch (menuOption)
-        {
-            case 1: ObjectOfTheGame();
-                cout << "\n\nWould you like to choose another menu option?(y or n) ";
-                cin >> choice;
-                break;
-            case 2: HowToPlay();
-                cout << "\n\nWould you like to choose another menu option?(y or n) ";
-                cin >> choice;
-                break;
-            case 3: FunctionsOfTheActionCards();
-                cout << "\n\nWould you like to choose another menu option?(y or n) ";
-                cin >> choice;
-                break;
-            case 4: GoingOut();
-                cout << "\n\nWould you like to choose another menu option?(y or n) ";
-                cin >> choice;
-                break;
-            case 5: Scoring();
-                cout << "\n\nWould you like to choose another menu option?(y or n) ";
-                cin >> choice;
-                break;
-            case 6: WinningTheGame();
-                cout << "\n\nWould you like to choose another menu option?(y or n) ";
-                cin >> choice;
-                break;
-            case 7: cout << "\nGreat! Let's get started." << endl;
-                choice = 'n';
-                break;
-            default: cout << "\nThat is not a valid menu item, plesae try again.\n";
-        }
-    } while (choice == 'y');
-    //CLEAR SCREEN
-}
-void ObjectOfTheGame(){
-    cout << "\nObject of the Game\n\tTo be the first player to run out of cards. Points are scored by getting rid of all the cards in your hand before your opponent(s). You score points for cards left in your opponents’ hands." << endl;
-}
-void HowToPlay(){
-    cout << "How to Play\nEvery player picks a card. The person who picks the highest number deals. Action Cards count as zero for this part of the game.\nOnce the cards are shuffled each player is dealt 7 cards.\nThe remainder of the deck is placed face down to form a DRAW pile. The top card of the DRAW pile is turned over to begin a DISCARD pile. If an Action Card is the first one turned up from the DRAW pile, certain rules apply (See FUNCTIONS OF ACTION CARDS).\nThe person to the left of the dealer starts play. He/she has to match the card on the DISCARD pile, either by number, color or symbol. For example, if the card is a red 7, the player must put down a red card or any color 7. Alternatively, the player can put down a Wild card (See FUNCTIONS OF ACTION CARDS).\nIf the player doesn’t have a card to match the one on the DISCARD pile, he/she must take a card from the DRAW pile.\nPlayers may choose not to play a playable card from their hand. If so, the player must draw a card from the DRAW pile." << endl;
-}
-void FunctionsOfTheActionCards(){
-    cout << "\nFunctions of the Action Cards\n";
-    cout << "Draw Two Card\n\tWhen this card is played, the next person to play must draw 2 cards and miss his/her turn. This card can only be played on matching colors and other Draw Two cards. If turned up at the beginning of play, the same rule applies." << endl;
-    cout << "Reverse Card\n\t This simply reverses direction of play. Play to changes direction to the right, and vice versa. The card may only be played on a matching color or on another Reverse card. If this card is turned up at the beginning of play, the dealer goes first, then play moves to the right instead of the left." << endl;
-    cout << "Skip Card\n\t The next player to play after this card has been laid loses his/her turn and is \"skipped\". The card may only be played on a matching color or on another Skip card. If a Skip card is turned up at the beginning of play, the player to the left of the dealer is \"skipped\", hence the player to the left of that player commences play." << endl;
-    cout << "Wild Card\n\tThe person playing this card calls for any color to continue the play, including the one currently being played, if so desired. A Wild card can be played at any time - even if the player has another playable card in the hand. If a Wild card is turned up at the beginning of play, the person to the left of the dealer determines the color, which continues play." << endl;
-    cout << "Wild Draw Four Card\n\t This is the best card to have. The person who plays it calls the color that continues play. Also, the next player has to pick up 4 cards from the DRAW pile and miss his/her turn. Unfortunately, the card can only be played when the player holding it does not have a card in his/her hand to match the color on the DISCARD pile. If the player holds matching numbers or Action Cards, however, the Wild Draw Four card may be played. A player holding a Wild Draw Four may choose to bluff and play the card illegally, but if he/she is caught certain rules apply (See PENALTIES). If this card is turned up at the beginning of play, it is returned to the deck and another card is picked." << endl;
-}
-void GoingOut(){
-    cout << "\nGoing Out\n\tOnce a player has no cards left, the hand is over. Points are scored (see SCORING) and play starts over again. If the last card played in a hand is a Draw Two or Wild Draw Four card, the next player must draw the 2 or 4 cards respectively. These cards are counted when the points are totalled. If no player is out of cards by the time the DRAW pile is depleted, the player with the least amount of points wins." << endl;
-}
-void Scoring(){
-    cout << "\nScoring\n\tThe first player to get rid of his/her cards receives points for cards left in opponents’ hands as follows:\n\tAll number cards (0-9) . . . . . . . . . . . . . 5 Points\n\tDraw Two. . . . . . . . . . . . . . . . . . . . . . . . 20 Points\n\tReverse . . . . . . . . . . . . . . . . . . . . . . . . . 20 Points\n\tSkip . . . . . . . . . . . . . . . . . . . . . . . . . . . . 20 Points\n\tWild . . . . . . . . . . . . . . . . . . . . . . . . . . . . 50 Points\n\tWild Draw Four . . . . . . . . . . . . . . . . . . . 50 Points" << endl;
-}
-void WinningTheGame(){
-    cout << "\nWinning The Game\n\tThe WINNER is the first player to reach 500 points. However, the game may be scored by keeping a running total of the points each player is caught with at the end of each hand. When one player reaches 500 points, the player with the lowest points is the winner." << endl;
-}
 int PlayerCard(){
     cout << "Which card would you like to play? ";
     int choice;
@@ -419,25 +369,26 @@ void DiscardPile(int discard){
         cout << ranks[discard % 15] << " " << colors[discard % 4] << endl;
 }
 int Score(vector<int> p1Cards, vector<int> compCards){
-    int score;
-    unsigned long p1Size = p1Cards.size();
-    for (int i = 0; i < p1Size; i++){
-        if (ranks[p1Cards[i] % 15] == "Wild" || ranks[p1Cards[i] % 15] == "Wild Draw Four")
-            score += 50;
-        if (ranks[p1Cards[i] % 15] == "Reverse" || ranks[p1Cards[i] % 15] == "Skip" || ranks[p1Cards[i] % 15] == "Draw Two")
-            score +=20;
-        else
-            score += 5;
+    int score = 0;
+    if (p1Cards.size() != 0){
+        for (int i = 0; i <= p1Cards.size()-1; i++){
+            if (ranks[p1Cards[i] % 15] == "Wild" || ranks[p1Cards[i] % 15] == "Wild Draw Four")
+                score += 50;
+            else if (ranks[p1Cards[i] % 15] == "Reverse" || ranks[p1Cards[i] % 15] == "Skip" || ranks[p1Cards[i] % 15] == "Draw Two")
+                score +=20;
+            else
+                score += 5;
+        }
     }
-    
-    unsigned long compSize = compCards.size();
-    for (int i = 0; i < compSize; i++){
-        if (ranks[compCards[i] % 15] == "Wild" || ranks[compCards[i] % 15] == "Wild Draw Four")
-            score += 50;
-        if (ranks[compCards[i] % 15] == "Reverse" || ranks[compCards[i] % 15] == "Skip" || ranks[compCards[i] % 15] == "Draw Two")
-            score +=20;
-        else
-            score += 5;
+    if (compCards.size() != 0){
+        for (int i = 0; i <= compCards.size()-1; i++){
+            if (ranks[compCards[i] % 15] == "Wild" || ranks[compCards[i] % 15] == "Wild Draw Four")
+                score += 50;
+            else if (ranks[compCards[i] % 15] == "Reverse" || ranks[compCards[i] % 15] == "Skip" || ranks[compCards[i] % 15] == "Draw Two")
+                score +=20;
+            else
+                score += 5;
+        }
     }
     return score;
 }

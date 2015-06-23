@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		CF4B498E1B33D55000228CE9 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CF4B498D1B33D55000228CE9 /* main.cpp */; };
 		CF4B499F1B369D7900228CE9 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CF4B499D1B369D7900228CE9 /* Player.cpp */; };
+		CF726B6C1B3A036E002A57BE /* Welcome.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CF726B6A1B3A036E002A57BE /* Welcome.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,6 +30,8 @@
 		CF4B499D1B369D7900228CE9 /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cpp; sourceTree = "<group>"; };
 		CF4B499E1B369D7900228CE9 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
 		CF4B49A11B37993A00228CE9 /* Stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stack.h; sourceTree = "<group>"; };
+		CF726B6A1B3A036E002A57BE /* Welcome.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Welcome.cpp; sourceTree = "<group>"; };
+		CF726B6B1B3A036E002A57BE /* Welcome.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Welcome.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +65,8 @@
 			isa = PBXGroup;
 			children = (
 				CF4B498D1B33D55000228CE9 /* main.cpp */,
+				CF726B6A1B3A036E002A57BE /* Welcome.cpp */,
+				CF726B6B1B3A036E002A57BE /* Welcome.h */,
 				CF4B49A11B37993A00228CE9 /* Stack.h */,
 				CF4B499D1B369D7900228CE9 /* Player.cpp */,
 				CF4B499E1B369D7900228CE9 /* Player.h */,
@@ -125,6 +130,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF726B6C1B3A036E002A57BE /* Welcome.cpp in Sources */,
 				CF4B499F1B369D7900228CE9 /* Player.cpp in Sources */,
 				CF4B498E1B33D55000228CE9 /* main.cpp in Sources */,
 			);
@@ -243,6 +249,7 @@
 				CF4B49931B33D55000228CE9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

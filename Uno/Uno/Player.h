@@ -10,9 +10,9 @@ class Player{
 private:
     string name;
     int score;
-    vector <int> cards;
-    
+
 public:
+    vector <int> cards;
     Player(string name, int score);
     void setName(string name);
     string getName();
@@ -21,6 +21,7 @@ public:
     void addCard(int cards);
     void subCard(int cards);
     vector<int> getCards();
+    
 };
 
 #endif
