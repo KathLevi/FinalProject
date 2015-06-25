@@ -10,7 +10,7 @@
 #include "Welcome.h"
 using namespace std;
 
-int PlayerCard();
+int PlayerCard(vector<int> cards);
 int CompCard(vector<int> cards, int discard);
 bool TestCard(int card, int discard);
 int Wild(int discard);
@@ -99,7 +99,7 @@ system("CLS");
                 else
                     cout << i << ") " << ranks[p1.getCards()[i] % 15] << endl;
             }
-            int choice = PlayerCard();
+            int choice = PlayerCard(p1.getCards());
             if (TestCard(p1.getCards()[choice], discard[size]) == true){
                 discard.push_back(p1.getCards()[choice]); //put the played card on top of the discard deck
                 if (ranks[p1.getCards()[choice] % 15] == "Draw Two"){
@@ -135,7 +135,7 @@ system("CLS");
                         else
                             cout << i << ") " << ranks[p1.getCards()[i] % 15] << endl;
                     }
-                    int choice = PlayerCard();
+                    int choice = PlayerCard(p1.getCards());
                     if (TestCard(p1.getCards()[choice], discard[size]) == true){
                         if (ranks[p1.getCards()[choice] % 15] == "Draw Two"){
                             comp.addCard(draw.pop());
@@ -271,10 +271,18 @@ system("CLS");
     return 0;
 }
 
-int PlayerCard(){
+int PlayerCard(vector<int> cards){
     cout << "Which card would you like to play? ";
     int choice;
     cin >> choice;
+    if (choice < 0){
+        cout << "\n\tThat choice is invalid, you have played card 0 as a default." << endl;
+        choice = 0;
+    }
+    if (choice > cards.size() - 1){
+        cout << "\n\tThat choice is invalid, you have played card 0 as a default." << endl;
+        choice = 0;
+    }
     return choice;
 }
 int CompCard(vector<int> cards, int discard){
