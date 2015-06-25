@@ -10,8 +10,6 @@
 #include "Welcome.h"
 using namespace std;
 
-//go through rules to make sure they make sense with the digital game
-//add clear functions right before I turn it in
 int PlayerCard();
 int CompCard(vector<int> cards, int discard);
 bool TestCard(int card, int discard);
@@ -36,7 +34,7 @@ int main(){
     
     Welcome w1;
     w1.Intro();
-//CLEAR SCREEN
+system("CLS");
     
     //create text file for player to keep track of scores
     string filename = name+" Scores.txt";
@@ -92,7 +90,7 @@ int main(){
             DiscardPile(discard[size]);
             
             cout << "\n\n" <<name << "'s turn" << endl; //Users turn
-            cout << "Your cards are: " << endl; //outputs the users cards
+            cout << "\nYour cards are: " << endl; //outputs the users cards
             for (int i = 0; i < p1.getCards().size(); i++){
                 if (ranks[p1.getCards()[i] % 15] != "Wild" && ranks[p1.getCards()[i] % 15] != "Wild Draw Four")
                 {
@@ -121,9 +119,9 @@ int main(){
                     size++;
                 }
                 if (ranks[p1.getCards()[choice] % 15] == "Skip" || ranks[p1.getCards()[choice] % 15] == "Reverse"){
-//better way to do the skip/ reverse cards
-//when they play reverse or skip, the card doesnt transfer to the discard deck
-                    discard.push_back(p1.getCards()[choice]); //put the played card on top of the discard deck
+//could be a better way to do the skip/ reverse cards
+                    discard.push_back(p1.getCards()[choice]);//put the played card on top of the discard deck
+                    size++;
                     p1.subCard(p1.getCards()[choice]);
                     DiscardPile(discard[size]);
                     
@@ -139,7 +137,6 @@ int main(){
                     }
                     int choice = PlayerCard();
                     if (TestCard(p1.getCards()[choice], discard[size]) == true){
-                        discard.push_back(p1.getCards()[choice]); //put the played card on top of the discard deck
                         if (ranks[p1.getCards()[choice] % 15] == "Draw Two"){
                             comp.addCard(draw.pop());
                             comp.addCard(draw.pop());
@@ -150,13 +147,10 @@ int main(){
                             comp.addCard(draw.pop());
                             comp.addCard(draw.pop());
                             discard.push_back(Wild(discard[size]));
-                            size++;
                         }
                         if (ranks[p1.getCards()[choice] % 15] == "Wild"){
                             discard.push_back(Wild(discard[size]));
-                            size++;
                         }
-//if they try to play a skip/ reverse again make them choose another card
                         size++;
                     }
                     else{
@@ -176,7 +170,7 @@ int main(){
                 cout << "That card cannot be played. You have drawn a new card." << endl;;
             }
             
-            DiscardPile(discard[size]);
+//            DiscardPile(discard[size]);
             cout << "\n\nComputer's turn" << endl; //Computers turn
             int cc = CompCard(comp.getCards(), discard[size]);
             //output what the computer does on it's turn
@@ -196,16 +190,15 @@ int main(){
                 if (ranks[comp.getCards()[cc] % 15] == "Wild")
                     discard.push_back(WildComp(discard[size]));
                 if (ranks[comp.getCards()[cc] % 15] == "Skip" || ranks[comp.getCards()[cc] % 15] == "Reverse"){
-//better way to do the skip/ reverse cards
-//when they play reverse or skip, the card doesnt transfer to the discard deck
+//could be a better way to do the skip/ reverse cards
                     discard.push_back(comp.getCards()[cc]); //put the played card on top of the discard deck
+                    size++;
                     comp.subCard(comp.getCards()[cc]);
-                    DiscardPile(discard[size]);
+//                    DiscardPile(discard[size]);
                     cout << "\n\nComputer's turn" << endl; //Computers turn
                     int cc = CompCard(comp.getCards(), discard[size]);
                     //output what the computer does on it's turn
                     if (TestCard(comp.getCards()[cc], discard[size]) == true){
-                        discard.push_back(comp.getCards()[cc]); //put the played card on top of the discard deck
                         if (ranks[comp.getCards()[cc] % 15] == "Draw Two"){
                             p1.addCard(draw.pop());
                             p1.addCard(draw.pop());
@@ -219,7 +212,6 @@ int main(){
                         }
                         if (ranks[comp.getCards()[cc] % 15] == "Wild")
                             discard.push_back(WildComp(discard[size]));
-//if they try to play a skip/ reverse again make them choose another card
                     }
                     else{
                         cout << "The computer has drawn a card." << endl;  //draw
@@ -235,11 +227,11 @@ int main(){
                 comp.addCard(draw.pop());
             }
             
-//CLEAR SCREEN
+system("CLS");
         }while (!draw.empty() || (p1.getCards().size() != 0) || (comp.getCards().size() != 0));
         //repeat until one player runs out of cards OR when the draw deck is empty
         
-//CLEAR SCREEN
+system("CLS");
         //tell who wins and deal out the scores
         if (p1.getCards().empty() || p1.getCards().size() < comp.getCards().size())
         {
@@ -270,11 +262,12 @@ int main(){
         cout << "Play again? (y or n)";
         cin >> again;
         again = tolower(again);
-//CLEAR SCREEN
+system("CLS");
     }while(again == 'y');
     
-    cout << "Thank you for playing, " << name << "! Come back soon!" << endl;
-//CLEAR SCREEN
+    cout << "\nThank you for playing, " << name << "! Come back soon!" << endl << endl;
+    cout << "\tYour score was " << p1.getScore() << endl;
+    cout << "\tThe computers score was " << comp.getScore() << endl;
     return 0;
 }
 
